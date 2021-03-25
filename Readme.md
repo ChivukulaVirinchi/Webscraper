@@ -2,8 +2,12 @@
 ## Clone the repository into your computer and start scraping the web!
 
 
-``` cmd
+``` shell
 $ pip3 install beautifulsoup4
+```
+``` shell
 $ sudo apt-get install wkhtmltopdf
+```
+``` shell
 $ pip3 install urllib
 ```

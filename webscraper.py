@@ -4,12 +4,22 @@ import urllib
 import os
 import pdfkit
 import re
+import time
+from requests.adapters import HTTPAdapter
+from urllib3.util import Retry
 
 url = 'https://docs.erpnext.com/docs/user/manual/en'
 response = requests.get(url)
 soup = bs(response.text,'html.parser')
 a=soup.findAll('a',{'class':'stretched-link'})
 
+session = requests.Session()
+retry = Retry(connect=3, backoff_factor=0.5)
+adapter = HTTPAdapter(max_retries=retry)
+session.mount('http://', adapter)
+session.mount('https://', adapter)
+
+session.get(url)
 
 lb1 = soup.findAll('a',{'href': re.compile('^/')})
 lb2 = soup.findAll('link',{'href': re.compile('^/')})
@@ -62,7 +72,6 @@ for i in range(1,len(card)):
     for f in links:
         html_link = (f['href'])
         html_res = requests.get('https://docs.erpnext.com' + html_link)
-            
         # creating files with same name as name in html link 
         filename =  dirname+html_link+'.pdf'
         if not os.path.isfile(filename):

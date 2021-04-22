@@ -13,14 +13,6 @@ response = requests.get(url)
 soup = bs(response.text,'html.parser')
 a=soup.findAll('a',{'class':'stretched-link'})
 
-session = requests.Session()
-retry = Retry(connect=3, backoff_factor=0.5)
-adapter = HTTPAdapter(max_retries=retry)
-session.mount('http://', adapter)
-session.mount('https://', adapter)
-
-session.get(url)
-
 lb1 = soup.findAll('a',{'href': re.compile('^/')})
 lb2 = soup.findAll('link',{'href': re.compile('^/')})
 lb3 = soup.findAll('script',{'src': re.compile('^/')})
